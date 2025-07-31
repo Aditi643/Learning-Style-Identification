@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quiz Completed</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      width: 100%;
+      background: linear-gradient(135deg, #ffffff 0%, #d3f2ff 100%);
+      overflow-x: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .completion-container {
+      background-color: white;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      max-width: 900px;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn 1s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .completion-header {
+      background: linear-gradient(135deg, #1d3557, #457b9d);
+      padding: 3rem 2rem 6rem;
+      position: relative;
+    }
+
+    .completion-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 80px;
+      background: white;
+      border-radius: 100% 100% 0 0;
+    }
+
+    .completion-content {
+      padding: 0 2rem 3rem;
+      margin-top: -4rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .illustration-container {
+      width: 220px;
+      height: 220px;
+      background-color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), inset 0 0 15px rgba(29, 53, 87, 0.1);
+      position: relative;
+      z-index: 3;
+      animation: float 6s ease-in-out infinite;
+      background: radial-gradient(circle, #ffffff 60%, #f0f7ff 100%);
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-15px);
+      }
+
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    .illustration {
+      width: 160px;
+      height: 160px;
+      background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><g transform="translate(100 100)"><path d="M38,-53.2C46.5,-43.9,49.1,-29.6,51.6,-16.1C54.1,-2.6,56.4,10.1,53.1,21.4C49.8,32.7,40.9,42.7,29.9,48.8C18.9,54.9,5.7,57.1,-6.3,55.2C-18.3,53.3,-29.2,47.2,-38.4,38.7C-47.7,30.1,-55.5,19,-59.1,5.9C-62.7,-7.2,-62.2,-22.3,-54.8,-32.5C-47.4,-42.7,-33.1,-48,-19.9,-55.1C-6.6,-62.2,6.6,-71.1,18.9,-68.4C31.2,-65.6,29.5,-62.4,38,-53.2Z" fill="%231d3557" opacity="0.08"/></g></svg>') center/cover no-repeat,
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><g fill="none" stroke="%231d3557" stroke-width="2"><circle cx="100" cy="100" r="90" opacity="0.2"/><circle cx="100" cy="100" r="70" opacity="0.2"/><circle cx="100" cy="100" r="50" opacity="0.2"/></g><g transform="translate(100,100)"><circle cx="0" cy="0" r="25" fill="%23457b9d" opacity="0.3"/><path d="M-15,-15 L15,15 M-15,15 L15,-15" stroke="%231d3557" stroke-width="8" stroke-linecap="round" opacity="0.6"/><path d="M-15,-15 L15,15 M-15,15 L15,-15" stroke="white" stroke-width="4" stroke-linecap="round"/></g><g transform="translate(100,40)"><path d="M-20,0 A20,20 0 0,1 20,0" stroke="%23ff7e5f" stroke-width="6" fill="none" stroke-linecap="round"/></g><g transform="translate(100,160)"><path d="M-20,0 A20,20 0 0,0 20,0" stroke="%23ff7e5f" stroke-width="6" fill="none" stroke-linecap="round"/></g><g transform="translate(160,100)"><text x="0" y="0" font-family="Arial" font-size="24" text-anchor="middle" fill="%231d3557" opacity="0.4">✓</text></g><g transform="translate(40,100)"><text x="0" y="0" font-family="Arial" font-size="24" text-anchor="middle" fill="%231d3557" opacity="0.4">✓</text></g></svg>');
+      border-radius: 50%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .completion-badge {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #ff7e5f, #feb47b);
+      color: white;
+      padding: 0.5rem 1.5rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      box-shadow: 0 5px 15px rgba(255, 126, 95, 0.4);
+      z-index: 4;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      color: #1d3557;
+      margin: 2.5rem 0 1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      position: relative;
+      display: inline-block;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(to right, #457b9d, #00AEEF);
+      border-radius: 2px;
+    }
+
+    .completion-emoji {
+      font-size: 3rem;
+      margin-bottom: 0.5rem;
+      animation: pulse 3s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.1);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #495057;
+      margin: 2rem auto;
+      line-height: 1.8;
+      max-width: 80%;
+    }
+
+    .highlight {
+      color: #1d3557;
+      font-weight: 600;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: #ff7e5f;
+      border-radius: 2px;
+      opacity: 0.8;
+    }
+
+    .result-btn {
+      padding: 1rem 2.8rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, #1d3557, #457b9d);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(29, 53, 87, 0.3);
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .result-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 25px rgba(29, 53, 87, 0.4);
+      background: linear-gradient(135deg, #152538, #3a6682);
+    }
+
+    .progress-container {
+      display: flex;
+      justify-content: space-between;
+      max-width: 300px;
+      margin: 2rem auto;
+    }
+
+    .progress-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+      flex-grow: 1;
+    }
+
+    .progress-step::after {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      width: 100%;
+      height: 2px;
+      background-color: #e9ecef;
+      z-index: 1;
+    }
+
+    .progress-step:last-child::after {
+      display: none;
+    }
+
+    .step-circle {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background-color: #e9ecef;
+      position: relative;
+      z-index: 2;
+    }
+
+    .step-label {
+      font-size: 0.8rem;
+      color: #6c757d;
+    }
+
+    .completed .step-circle {
+      background-color: #457b9d;
+    }
+
+    .completed .step-label {
+      color: #457b9d;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .completion-container {
+        width: 95%;
+      }
+
+      .completion-header {
+        padding: 2rem 1rem 5rem;
+      }
+
+      .illustration-container {
+        width: 180px;
+        height: 180px;
+      }
+
+      .illustration {
+        width: 130px;
+        height: 130px;
+      }
+
+      h2 {
+        font-size: 2rem;
+      }
+
+      p {
+        font-size: 1.1rem;
+        max-width: 90%;
+      }
+
+      .result-btn {
+        padding: 0.9rem 2.3rem;
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .completion-header {
+        padding: 1.5rem 1rem 4.5rem;
+      }
+
+      .illustration-container {
+        width: 150px;
+        height: 150px;
+      }
+
+      .illustration {
+        width: 110px;
+        height: 110px;
+      }
+
+      h2 {
+        font-size: 1.8rem;
+        margin-top: 2rem;
+      }
+
+      p {
+        font-size: 1rem;
+        margin: 1.5rem auto;
+      }
+
+      .completion-badge {
+        font-size: 0.8rem;
+        padding: 0.4rem 1.2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="completion-container">
+    <div class="completion-header"></div>
+
+    <div class="completion-content">
+      <div class="illustration-container">
+        <div class="completion-badge">Quiz Completed!</div>
+        <div class="illustration">
+          <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160"
+            style="position: absolute; top: 0; left: 0;">
+            <defs>
+              <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#EBF5FF;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#FFFFFF;stop-opacity:1" />
+              </linearGradient>
+              <linearGradient id="docGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#F1F9FF;stop-opacity:1" />
+              </linearGradient>
+              <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" style="stop-color:#1d3557;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#457b9d;stop-opacity:1" />
+              </linearGradient>
+            </defs>
+
+            <!-- Background -->
+            <circle cx="80" cy="80" r="80" fill="url(#bgGradient)" />
+
+            <!-- Document with checkmark -->
+            <g transform="translate(30, 25)">
+              <!-- Base document -->
+              <path d="M0,0 L70,0 L100,30 L100,110 L0,110 Z" fill="url(#docGradient)" stroke="#E0E0E0"
+                stroke-width="1" />
+
+              <!-- Folded corner -->
+              <path d="M70,0 L70,30 L100,30 Z" fill="#F8FBFF" stroke="#E0E0E0" stroke-width="1" />
+
+              <!-- Lines on document -->
+              <line x1="15" y1="45" x2="85" y2="45" stroke="#E0E0E0" stroke-width="2" />
+              <line x1="15" y1="60" x2="85" y2="60" stroke="#E0E0E0" stroke-width="2" />
+              <line x1="15" y1="75" x2="85" y2="75" stroke="#E0E0E0" stroke-width="2" />
+              <line x1="15" y1="90" x2="40" y2="90" stroke="#E0E0E0" stroke-width="2" />
+
+              <!-- Circular background for checkmark -->
+              <circle cx="50" cy="70" r="30" fill="url(#accentGradient)" opacity="0.1" />
+
+              <!-- Checkmark -->
+              <path d="M35,70 L45,80 L65,60" fill="none" stroke="url(#accentGradient)" stroke-width="4"
+                stroke-linecap="round" stroke-linejoin="round" />
+            </g>
+
+            <!-- Small decorative elements -->
+            <circle cx="25" cy="40" r="3" fill="#457b9d" opacity="0.5" />
+            <circle cx="135" cy="120" r="3" fill="#457b9d" opacity="0.5" />
+            <circle cx="140" cy="30" r="2" fill="#457b9d" opacity="0.5" />
+            <circle cx="20" cy="130" r="2" fill="#457b9d" opacity="0.5" />
+
+            <!-- Small stars -->
+            <path d="M125,50 L127,55 L132,56 L128.5,60 L129,65 L125,62.5 L121,65 L121.5,60 L118,56 L123,55 Z"
+              fill="#FFD700" opacity="0.7" />
+            <path d="M30,100 L31,103 L34,103.5 L32,106 L32.5,109 L30,107.5 L27.5,109 L28,106 L26,103.5 L29,103 Z"
+              fill="#FFD700" opacity="0.7" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="completion-emoji">🎉</div>
+      <h2>Congratulations!</h2>
+
+      <div class="progress-container">
+        <div class="progress-step completed">
+          <div class="step-circle"></div>
+          <div class="step-label">Start</div>
+        </div>
+        <div class="progress-step completed">
+          <div class="step-circle"></div>
+          <div class="step-label">Questions</div>
+        </div>
+        <div class="progress-step completed">
+          <div class="step-circle"></div>
+          <div class="step-label">Complete</div>
+        </div>
+        <div class="progress-step">
+          <div class="step-circle"></div>
+          <div class="step-label">Results</div>
+        </div>
+      </div>
+
+      <p>
+        You've successfully completed the learning style assessment!
+        <span class="highlight">Let's explore your unique learning style</span> and discover
+        the most effective strategies for your educational journey.
+      </p>
+
+      <button class="result-btn" onclick="window.location.href='re.html'">
+        See Your Results <span style="font-size: 1.2em; margin-left: 0.3rem;">→</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Add subtle animation to the document illustration
+    window.addEventListener('load', () => {
+      setTimeout(createConfetti, 500);
+
+      // Animate the document illustration
+      const illustration = document.querySelector('.illustration svg');
+      if (illustration) {
+        illustration.style.transition = 'all 0.5s ease';
+
+        // Subtle hover effect
+        const illustrationContainer = document.querySelector('.illustration-container');
+        illustrationContainer.addEventListener('mouseenter', () => {
+          illustration.style.transform = 'scale(1.05)';
+        });
+
+        illustrationContainer.addEventListener('mouseleave', () => {
+          illustration.style.transform = 'scale(1)';
+        });
+      }
+    });
+
+    // Create confetti effect
+    function createConfetti() {
+      const colors = ['#1d3557', '#457b9d', '#00AEEF', '#ff7e5f', '#feb47b'];
+      const confettiCount = 100;
+
+      for (let i = 0; i < confettiCount; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.top = (Math.random() * 20 - 10) + 'vh';
+        confetti.style.transform = 'rotate(' + Math.random() * 360 + 'deg)';
+        confetti.style.width = (Math.random() * 8 + 5) + 'px';
+        confetti.style.height = (Math.random() * 4 + 5) + 'px';
+        confetti.style.opacity = Math.random() + 0.5;
+
+        document.body.appendChild(confetti);
+
+        let animation = confetti.animate([
+          { transform: 'translate(0, 0) rotate(0deg)', opacity: 1 },
+          { transform: 'translate(' + (Math.random() * 100 - 50) + 'px, ' + (window.innerHeight + 100) + 'px) rotate(' + (Math.random() * 360 + 180) + 'deg)', opacity: 0 }
+        ], {
+          duration: Math.random() * 3000 + 2000,
+          easing: 'cubic-bezier(0,0.2,0.8,1)'
+        });
+
+        animation.onfinish = () => {
+          confetti.remove();
+        };
+      }
+    }
+  </script>
+</body>
+
+</html>
