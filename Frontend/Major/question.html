@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learning Style Quiz</title>
+  <!-- Import Inter font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Import Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #4361ee;
+      --primary-dark: #3a56d4;
+      --secondary: #7209b7;
+      --accent: #f72585;
+      --light: #f8f9fa;
+      --dark: #2b2d42;
+      --success: #43aa8b;
+      --text: #2b2d42;
+      --background: #f1faee;
+      --card: rgba(255, 255, 255, 0.95);
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #4361ee55, #7209b755),
+        url('/api/placeholder/1600/900') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      color: var(--text);
+    }
+
+    .quiz-container {
+      background-color: var(--card);
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 1000px;
+      height: auto;
+      min-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    .quiz-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    #step-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: transparent;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      position: relative;
+      display: inline-block;
+    }
+
+    #step-title::after {
+      content: '';
+      position: absolute;
+      width: 60%;
+      height: 4px;
+      background: linear-gradient(to right, var(--primary), var(--accent));
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    .step-subtitle {
+      font-size: 1.1rem;
+      color: var(--dark);
+      opacity: 0.8;
+      margin-top: 1rem;
+    }
+
+    .progress-container {
+      width: 100%;
+      height: 10px;
+      background-color: #e9ecef;
+      border-radius: 10px;
+      margin: 1.5rem 0;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(to right, var(--primary), var(--accent));
+      border-radius: 10px;
+      transition: width 0.4s ease;
+      position: relative;
+    }
+
+    .progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.3) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      animation: shine 2s infinite;
+    }
+
+    @keyframes shine {
+      0% {
+        transform: translateX(-100%);
+      }
+      100% {
+        transform: translateX(100%);
+      }
+    }
+
+    .question {
+      background-color: var(--light);
+      padding: 1.5rem 2rem;
+      border-radius: 16px;
+      margin-bottom: 1.8rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border-left: 5px solid var(--primary);
+      position: relative;
+    }
+
+    .question::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 60px;
+      height: 60px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234361ee' opacity='0.2'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm0-4h-2V7h2v8z'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+      opacity: 0.1;
+      transform: rotate(5deg);
+    }
+
+    .question:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .question p {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--dark);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .question-number {
+      display: inline-flex;
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border-radius: 50%;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      margin-right: 12px;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3);
+    }
+
+    .options {
+      display: grid;
+      gap: 12px;
+    }
+
+    .option-label {
+      background-color: white;
+      padding: 1rem 1.2rem;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    }
+
+    .option-label:hover {
+      background-color: #f0f7ff;
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(67, 97, 238, 0.15);
+    }
+
+    .options input[type="radio"] {
+      margin-right: 12px;
+      accent-color: var(--primary);
+      width: 20px;
+      height: 20px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .option-icon {
+      margin-right: 10px;
+      color: var(--primary);
+      font-size: 1.2rem;
+    }
+
+    .options input[type="radio"]:checked+.option-text {
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .options input[type="radio"]:checked ~ .option-icon {
+      animation: bounce 0.5s;
+    }
+
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .options input[type="radio"]:checked+.option-text::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 4px;
+      background-color: var(--primary);
+      border-radius: 4px 0 0 4px;
+    }
+
+    .option-text {
+      font-size: 1.05rem;
+      position: relative;
+      padding-left: 10px;
+      flex: 1;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: space-between;
+      margin-top: auto;
+      padding-top: 1.5rem;
+    }
+
+    .nav-btn {
+      padding: 0.85rem 2rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .prev-btn {
+      background-color: #e9ecef;
+      color: var(--dark);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .prev-btn:hover {
+      background-color: #dee2e6;
+      transform: translateX(-2px);
+    }
+
+    .next-btn {
+      background: linear-gradient(to right, var(--primary), var(--primary-dark));
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .next-btn::after, .finish-btn::after, .prev-btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      transition: transform 0.5s;
+    }
+
+    .next-btn:active::after, .finish-btn:active::after, .prev-btn:active::after {
+      transform: translate(-50%, -50%) scale(3);
+      opacity: 0;
+    }
+
+    .next-btn:hover {
+      background: linear-gradient(to right, var(--primary-dark), var(--primary));
+      transform: translateY(-2px) translateX(2px);
+      box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
+    }
+
+    .finish-btn {
+      background: linear-gradient(to right, var(--primary), var(--accent));
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .finish-btn:hover {
+      transform: translateY(-2px) translateX(2px);
+      box-shadow: 0 4px 12px rgba(247, 37, 133, 0.4);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .animated {
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .icon-container {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      opacity: 0.05;
+      top: -20px;
+      right: -20px;
+      z-index: 0;
+    }
+
+    .icon-container svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Learning style icons at the bottom */
+    .learning-styles {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+      gap: 1.5rem;
+    }
+
+    .style-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0.7;
+      transition: var(--transition);
+    }
+
+    .style-icon:hover {
+      opacity: 1;
+      transform: translateY(-5px);
+    }
+
+    .style-icon i {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .style-icon.visual i {
+      color: #4cc9f0;
+    }
+
+    .style-icon.auditory i {
+      color: #f72585;
+    }
+
+    .style-icon.kinesthetic i {
+      color: #43aa8b;
+    }
+    .style-icon.reading i {
+      color: #d19546;
+    }
+
+    .style-icon span {
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .decoration {
+      position: absolute;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .decoration-1 {
+      top: 20px;
+      left: -20px;
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, var(--accent), transparent);
+      border-radius: 50%;
+      opacity: 0.1;
+    }
+
+    .decoration-2 {
+      bottom: 30px;
+      right: -30px;
+      width: 150px;
+      height: 150px;
+      background: linear-gradient(135deg, var(--primary), transparent);
+      border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+      opacity: 0.1;
+    }
+
+    @media (max-width: 768px) {
+      .quiz-container {
+        padding: 1.5rem;
+        min-height: 90vh;
+      }
+
+      #step-title {
+        font-size: 1.8rem;
+      }
+
+      .step-subtitle {
+        font-size: 0.9rem;
+      }
+
+      .question {
+        padding: 1.2rem 1.5rem;
+      }
+
+      .question p {
+        font-size: 1.1rem;
+      }
+
+      .option-label {
+        padding: 0.8rem 1rem;
+      }
+
+      .nav-btn {
+        font-size: 1rem;
+        padding: 0.7rem 1.5rem;
+      }
+
+      .quiz-icon {
+        font-size: 2rem;
+      }
+
+      .learning-styles {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="quiz-container animated">
+    <!-- Decorative elements -->
+    <div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
+
+    <div class="header">
+      <div class="quiz-icon">
+        <i class="fas fa-brain"></i>
+      </div>
+      <h2 id="step-title">Discover Your Learning Style</h2>
+      <p class="step-subtitle">Complete this quiz to understand how you learn best</p>
+      <div class="progress-container">
+        <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <form id="quiz-form"> </form>
+
+    <div class="learning-styles">
+      <div class="style-icon visual">
+        <i class="fas fa-eye"></i>
+        <span>Visual</span>
+      </div>
+      <div class="style-icon auditory">
+        <i class="fas fa-ear-listen"></i>
+        <span>Auditory</span>
+      </div>
+      <div class="style-icon kinesthetic">
+        <i class="fas fa-hands"></i>
+        <span>Kinesthetic</span>
+      </div>
+      <div class="style-icon reading">
+        <i class="fas fa-book-open-reader"></i>
+        <span>Reading</span>
+      </div>
+    </div>
+
+    <div class="button-container">
+      <button class="nav-btn prev-btn hidden" id="prev-btn">
+        <i class="fas fa-arrow-left"></i>
+        Previous
+      </button>
+      <button class="nav-btn next-btn" id="next-btn" >
+        Next
+        <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "What do you enjoy more?",
+        options: [
+          { text: "Reading books and written materials", icon: "fa-book" },
+          { text: "Listening to lectures and discussions", icon: "fa-headphones" },
+          { text: "Hands-on activities and experiments", icon: "fa-hand-paper" }
+        ]
+      },
+      {
+        question: "How do you prefer to learn new things?",
+        options: [
+          { text: "By seeing diagrams, charts, and visual examples", icon: "fa-chart-pie" },
+          { text: "By listening to detailed explanations", icon: "fa-ear-listen" },
+          { text: "By doing and experiencing it yourself", icon: "fa-person-walking" }
+        ]
+      },
+      {
+        question: "What's your favorite way to study?",
+        options: [
+          { text: "Using flashcards and mind maps", icon: "fa-diagram-project" },
+          { text: "Discussing the topic with others", icon: "fa-comments" },
+          { text: "Creating models or role-playing scenarios", icon: "fa-cubes" }
+        ]
+      },
+      {
+        question: "Do you prefer to:",
+        options: [
+          { text: "Draw diagrams and use color-coding in notes", icon: "fa-palette" },
+          { text: "Record lectures and listen to them later", icon: "fa-microphone" },
+          { text: "Move around or use physical objects while learning", icon: "fa-person-walking" }
+        ]
+      },
+      {
+        question: "Do you enjoy listening to podcasts or audiobooks?",
+        options: [
+          { text: "Not really, I prefer reading the text", icon: "fa-book-open" },
+          { text: "Yes, I learn better through listening", icon: "fa-podcast" },
+          { text: "Only if I can do something else while listening", icon: "fa-person-running" }
+        ]
+      },
+      {
+        question: "Do you prefer watching videos to understand topics?",
+        options: [
+          { text: "Yes, especially when they include visual aids", icon: "fa-video" },
+          { text: "I prefer audio explanations without distracting visuals", icon: "fa-volume-high" },
+          { text: "I prefer interactive tutorials where I can practice", icon: "fa-gamepad" }
+        ]
+      },
+      {
+        question: "How do you revise for exams?",
+        options: [
+          { text: "By creating visual summaries and diagrams", icon: "fa-pen-to-square" },
+          { text: "By explaining concepts out loud or in study groups", icon: "fa-users" },
+          { text: "By walking around or using physical flashcards", icon: "fa-shoe-prints" }
+        ]
+      },
+      {
+        question: "Do you prefer group studies or self-study?",
+        options: [
+          { text: "Self-study with visual materials", icon: "fa-user-graduate" },
+          { text: "Group discussions where I can hear different perspectives", icon: "fa-people-group" },
+          { text: "Interactive study sessions with activities", icon: "fa-hands-clapping" }
+        ]
+      },
+      {
+        question: "When trying to remember something, do you:",
+        options: [
+          { text: "Visualize it in your mind", icon: "fa-image" },
+          { text: "Repeat it out loud several times", icon: "fa-volume-high" },
+          { text: "Act it out or associate it with a physical movement", icon: "fa-person-walking" }
+        ]
+      },
+      {
+        question: "Do you talk to yourself while solving problems?",
+        options: [
+          { text: "No, I prefer to sketch out solutions", icon: "fa-pencil" },
+          { text: "Yes, I think better when talking through problems", icon: "fa-comment" },
+          { text: "I prefer to physically work through problems", icon: "fa-hammer" }
+        ]
+      },
+      {
+        question: "When explaining directions, do you:",
+        options: [
+          { text: "Draw a map or use visual references", icon: "fa-map" },
+          { text: "Give detailed verbal instructions", icon: "fa-bullhorn" },
+          { text: "Use hand gestures and body language", icon: "fa-hands" }
+        ]
+      },
+      {
+        question: "Do you like practical hands-on experiments?",
+        options: [
+          { text: "Only if they include visual demonstrations", icon: "fa-eye" },
+          { text: "I prefer discussions about the theory", icon: "fa-chalkboard-user" },
+          { text: "Absolutely, I learn best by doing", icon: "fa-flask" }
+        ]
+      },
+      {
+        question: "What grabs your attention most during a presentation?",
+        options: [
+          { text: "Interesting slides and visual content", icon: "fa-desktop" },
+          { text: "The speaker's tone of voice and word choice", icon: "fa-microphone" },
+          { text: "Interactive elements and movement", icon: "fa-people-arrows" }
+        ]
+      },
+      {
+        question: "Do you relate better to:",
+        options: [
+          { text: "Diagrams and written instructions", icon: "fa-sitemap" },
+          { text: "Verbal instructions and discussions", icon: "fa-comment-dots" },
+          { text: "Demonstrations you can try yourself", icon: "fa-hands" }
+        ]
+      },
+      {
+        question: "When learning a new skill, do you prefer to:",
+        options: [
+          { text: "Watch someone else do it first", icon: "fa-eye" },
+          { text: "Listen to a detailed explanation", icon: "fa-ear-listen" },
+          { text: "Try it out immediately and learn as you go", icon: "fa-person-digging" }
+        ]
+      },
+      {
+        question: "Do you like to act things out to remember them?",
+        options: [
+          { text: "No, I prefer to create visual associations", icon: "fa-link" },
+          { text: "No, I prefer to create verbal mnemonics", icon: "fa-spell-check" },
+          { text: "Yes, physical movement helps me remember", icon: "fa-person-walking" }
+        ]
+      },
+      {
+        question: "Which helps you memorize best?",
+        options: [
+          { text: "Writing things down and using visual cues", icon: "fa-pen" },
+          { text: "Repeating information out loud or singing it", icon: "fa-music" },
+          { text: "Associating information with movements or gestures", icon: "fa-hand" }
+        ]
+      }
+    ];
+
+    const questionsPerPage = 4;
+    const totalPages = Math.ceil(questions.length / questionsPerPage);
+    let currentPage = 0;
+    let userAnswers = Array(questions.length).fill(null);
+
+    // Learning style mappings for icons
+    const learningStyles = ['visual', 'auditory', 'kinesthetic', 'reading'];
+
+    // Initialize UI
+    updateProgressBar();
+    renderQuestions(currentPage);
+
+    document.getElementById('next-btn').addEventListener('click', async (e) => {
+      e.preventDefault();
+
+      // Collect answers from current page
+      for (let i = currentPage * questionsPerPage; i < Math.min((currentPage + 1) * questionsPerPage, questions.length); i++) {
+        const selectedOption = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selectedOption) {
+          userAnswers[i] = parseInt(selectedOption.value);
+        }
+      }
+
+      if (currentPage < totalPages - 1) {
+        currentPage++;
+        renderQuestions(currentPage);
+        updateProgressBar();
+        if (currentPage > 0) {
+          document.getElementById('prev-btn').classList.remove('hidden');
+        }
+        if (currentPage === totalPages - 1) {
+          const nextBtn = document.getElementById('next-btn');
+          nextBtn.className = 'nav-btn finish-btn';
+          nextBtn.innerHTML = 'See Results <i class="fas fa-check-circle"></i>';
+        }
+      } else {
+        // Calculate and show results (in real app)
+
+        // Collect all answers
+let features = [];
+for (let i = 0; i < userAnswers.length; i++) {
+  if (userAnswers[i] !== null) {
+    features.push(userAnswers[i]);
+  } else {
+    alert("Please answer all questions before submitting.");
+    return;
+  }
+}
+
+try {
+  const response = await fetch("http://127.0.0.1:8000/predict/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ features: features })
+  });
+
+  if (!response.ok) {
+    throw new Error("Server error, please try again later.");
+  }
+
+  const result = await response.json();
+  // Save prediction to localStorage
+  localStorage.setItem("prediction", result.prediction);
+
+  // Redirect to result page
+  window.location.href = "result.html";
+} catch (error) {
+  alert("Prediction failed: " + error.message);
+}
+
+       
+      // const results = calculateResults();
+        //window.location.href = `result.html?dominantStyle=${results.dominantStyle}&visual=${results.scores.visual}&auditory=${results.scores.auditory}&kinesthetic=${results.scores.kinesthetic}`;
+      }
+    });
+
+    document.getElementById('prev-btn').addEventListener('click', (e) => {
+      e.preventDefault();
+      if (currentPage > 0) {
+        currentPage--;
+        renderQuestions(currentPage);
+        updateProgressBar();
+        if (currentPage === 0) {
+          document.getElementById('prev-btn').classList.add('hidden');
+        }
+        const nextBtn = document.getElementById('next-btn');
+        nextBtn.className = 'nav-btn next-btn';
+        nextBtn.innerHTML = 'Next <i class="fas fa-arrow-right"></i>';
+      }
+    });
+
+    function renderQuestions(page) {
+      const form = document.getElementById('quiz-form');
+      form.innerHTML = '';
+      form.className = 'animated';
+
+      const start = page * questionsPerPage;
+      const end = Math.min(start + questionsPerPage, questions.length);
+
+      // Update header
+      document.getElementById('step-title').innerText = `Step ${page + 1} of ${totalPages}`;
+
+      for (let i = start; i < end; i++) {
+        const qDiv = document.createElement('div');
+        qDiv.className = 'question animated';
+        qDiv.style.animationDelay = `${(i - start) * 0.1}s`;
+
+        let optionsHTML = '';
+        for (let j = 0; j < questions[i].options.length; j++) {
+          const option = questions[i].options[j];
+          optionsHTML += `
+            <label class="option-label">
+              <input type="radio" name="q${i}" value="${j}" ${userAnswers[i] === j ? 'checked' : ''} />
+              <span class="option-text">${option.text}</span>
+              <i class="fas ${option.icon} option-icon"></i>
+            </label>
+          `;
+        }
+
+        // Add category icon based on question type
+        let iconClass = '';
+        if (i % 4 === 0) iconClass = 'fa-eye';
+        else if (i % 4 === 1) iconClass = 'fa-ear-listen';
+        else if (i % 4 === 2) iconClass = 'fa-hands';
+        else iconClass = 'fa-book-open-reader';
+
+        qDiv.innerHTML = `
+          <div class="icon-container">
+            <i class="fas ${iconClass}"></i>
+          </div>
+          <p><span class="question-number">${i + 1}</span> ${questions[i].question}</p>
+          <div class="options">
+            ${optionsHTML}
+          </div>
+        `;
+
+        form.appendChild(qDiv);
+      }
+    }
+
+    function updateProgressBar() {
+      const progressBar = document.getElementById('progress-bar');
+      const progress = ((currentPage + 1) / totalPages) * 100;
+      progressBar.style.width = `${progress}%`;
+    }
+     
+
+    // function calculateResults() {
+    //   // Count the scores for each learning style
+    //   const scores = {
+    //     visual: 0,
+    //     auditory: 0,
+    //     kinesthetic: 0,
+    //     reading:0
+    //   };
+
+    //   for (let i = 0; i < userAnswers.length; i++) {
+    //     if (userAnswers[i] !== null) {
+    //       const style = learningStyles[userAnswers[i]];
+    //       scores[style]++;
+    //     }
+    //   }
+
+    //   // Find the dominant style
+    //   let dominantStyle = 'visual';
+    //   if (scores.auditory > scores[dominantStyle] && scores.auditory > scores.kinesthetic && scores.auditory > scores.reading) dominantStyle = 'auditory';
+    //   if (scores.kinesthetic > scores[dominantStyle] && scores.kinesthetic > scores.auditory && scores.kinesthetic>scores.reading) dominantStyle = 'kinesthetic';
+    //   if (scores.reading > scores[dominantStyle] && scores.reading > scores.auditory && scores.reading>scores.kinesthetic) dominantStyle = 'reading';
+
+    //   return {
+    //     scores,
+    //     dominantStyle
+    //   };
+    // }
+  </script>
+</body>
+
+</html>
